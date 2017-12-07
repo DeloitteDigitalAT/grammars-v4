@@ -972,10 +972,11 @@ queryExpressionNointo
     ;
 
 querySpecification
-    : SELECT selectSpec* selectElements selectIntoExpression?
+    : SELECT selectSpec* selectElements fromClause? orderByClause? limitClause?
+    | SELECT selectSpec* selectElements selectIntoExpression
       fromClause? orderByClause? limitClause?
     | SELECT selectSpec* selectElements
-    fromClause? orderByClause? limitClause? selectIntoExpression?
+      fromClause? orderByClause? limitClause? selectIntoExpression
     ;
 
 querySpecificationNointo
@@ -1008,9 +1009,7 @@ selectElements
 
 selectElement
     : fullId '.' '*'                                                #selectStarElement
-    | fullColumnName (AS? uid)?                                     #selectColumnElement
-    | functionCall (AS? uid)?                                       #selectFunctionElement
-    | (LOCAL_ID VAR_ASSIGN)? expression (AS? uid)?                  #selectExpressionElement
+    | expression (AS? uid)?                                         #selectExpressionElement
     ;
 
 selectIntoExpression
@@ -2215,15 +2214,15 @@ passwordFunctionClause
     ;
 
 functionArgs
-    : (constant | fullColumnName | functionCall | expression) 
+    : functionArg
     (
-      ',' 
-      (constant | fullColumnName | functionCall | expression)
+      ','
+      functionArg
     )*
     ;
 
 functionArg
-    : constant | fullColumnName | functionCall | expression
+    : expression
     ;
 
 
