@@ -258,11 +258,11 @@ scheduleExpression
     : AT timestampValue intervalExpr*                               #preciseSchedule
     | EVERY (decimalLiteral | expression) intervalType
         (
-          STARTS start=timestampValue 
+          STARTS startTs=timestampValue 
           (startIntervals+=intervalExpr)*
         )? 
         (
-          ENDS end=timestampValue 
+          ENDS endTs=timestampValue 
           (endIntervals+=intervalExpr)*
         )?                                                          #intervalSchedule
     ;
